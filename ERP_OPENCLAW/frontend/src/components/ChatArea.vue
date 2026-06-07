@@ -4,7 +4,6 @@
     <div class="message-list" ref="messageListRef">
       <!-- 空状态 -->
       <div v-if="displayMessages.length === 0" class="empty-state">
-        <div class="empty-icon"><img src="https://www-static.mashibing.com/_nuxt/img/logo.69f6ec8.svg" alt="logo" /></div>
         <h2>基于Harness Engineering的智能助手</h2>
         <p>我是你的 AI 助手，可以帮助你完成各种任务</p>
         <div class="feature-list">
@@ -163,21 +162,6 @@ function scrollToBottom() {
   padding: 40px 24px;
   text-align: center;
   background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
-}
-
-.empty-icon {
-  margin-bottom: 24px;
-  animation: float 3s ease-in-out infinite;
-}
-
-.empty-icon img {
-  width: 240px;
-  height: 240px;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
 }
 
 .empty-state h2 {

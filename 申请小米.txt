@@ -1,0 +1,5 @@
+我构建了一套面向摩托车零部件场景的 「传统 ERP + AI 多 Agent」智能采购平台。核心痛点是：供应商、库存、订单等数据分散在多个系统，业务人员需在 Swagger/多页面间手工查数、建单，非技术人员难以完成比价分析与可控下单。
+
+技术实现上，我采用 Spring Boot 8 大业务模块 + MySQL 作为可信数据源，通过 FastMCP 将 REST API 封装为 Agent 可调用工具；上层基于 LangGraph / DeepAgents 编排主 Agent 与两个专业子 Agent（procurement-analyst 负责多步比价/报告/26 类图表，procurement-order 负责建单/改单并在 order_create/order_update 前触发 Human-in-the-Loop 审批）。主 Agent 按意图做任务委派，分析子 Agent 在 OpenSandbox 内执行长链推理：加载 Skills 手册 → MCP 查 ERP → 网页抓取/外网搜索 → 沙箱 Python 计算 → 生成 Markdown 报告；支持工具结果自动 Offload、85% 窗口 Summarization、MongoDB Checkpoint 中断恢复。前端为 Vue3 + SSE 流式对话，实现审批横幅与 /resume 续跑。
+
+目前已形成 Java(8080) + MCP(8000) + FastAPI/Vue(8090/3000) 的端到端 Demo，覆盖供应商→零部件→订单→库存→物流全流程，将「对话查数 + 分析 + 可控下单」从概念落地为可演示、可扩展的 AI+ERP 集成方案。

@@ -1,11 +1,11 @@
 ---
 name: skill-management
-description: 用于管理用户技能的完整生命周期：从 URL 下载技能 ZIP 包并解压、根据需求创建新技能、沙箱内测试验证、持久化到 StoreBackend、分配给指定子 Agent。当用户要下载、创建、安装、分配技能时激活。
+description: 用于管理技能的完整生命周期：从 URL 下载技能 ZIP 包并解压、根据需求创建新技能、沙箱内测试验证、持久化到 StoreBackend、分配给指定子 Agent。当用户要下载、创建、安装、分配技能时激活。
 ---
 
 # 技能管理
 
-你负责管理用户技能的完整生命周期。所有操作在沙箱内执行（安全隔离），通过 StoreBackend 持久化（跨会话保留）。
+你负责管理技能。所有操作在沙箱内执行（安全隔离），通过 StoreBackend 持久化（跨会话保留）。
 
 ## 技能架构
 
@@ -17,10 +17,12 @@ description: 用于管理用户技能的完整生命周期：从 URL 下载技�
 
 ### Scope 映射表
 
-| 子 Agent | scope | 技能路径 |
-|----------|-------|----------|
+
+| 子 Agent               | scope         | 技能路径                   |
+| --------------------- | ------------- | ---------------------- |
 | `procurement-analyst` | `procurement` | `/skills/procurement/` |
-| `procurement-order` | `order` | `/skills/order/` |
+| `procurement-order`   | `order`       | `/skills/order/`       |
+
 
 > 所有技能在 scope 下平级存放，不区分预置/持久化。
 > 子 Agent 通过渐进式披露自动发现所属 scope 下的所有技能，无需手动激活。
@@ -32,11 +34,13 @@ description: 用于管理用户技能的完整生命周期：从 URL 下载技�
 用户提供 ZIP 下载 URL（如 `https://xxx.convex.site/api/v1/download?slug=web-scraper`）。
 
 一条命令完成下载 + 解压 + 结构校验：
+
 ```
 execute("python /skills/main/skill-management/scripts/download_skill.py '{url}'")
 ```
 
 脚本自动完成：
+
 - 从 URL 的 `slug` 参数提取技能名
 - `urllib` 下载 ZIP 到 `/skills/main/{name}.zip`
 - `zipfile` 解压到 `/skills/main/{name}/`
@@ -50,6 +54,7 @@ execute("python /skills/main/skill-management/scripts/download_skill.py '{url}'"
 ### 阶段 2 — 创建模式（用户描述需求，无 URL）
 
 当用户直接描述需求而不是提供 URL 时：
+
 1. 根据用户需求生成 SKILL.md，包含 frontmatter（name、description）和步骤说明
 2. `write_file("/skills/main/{name}/SKILL.md", content)`
 3. 如有附属 .py 脚本，一并写入同目录
@@ -57,6 +62,7 @@ execute("python /skills/main/skill-management/scripts/download_skill.py '{url}'"
 ### 阶段 3 — 功能测试（沙箱内）
 
 在 `/skills/main/{name}/` 下进行：
+
 ```
 ① 阅读 SKILL.md 中的使用说明，确认入口和参数
 ② 如有 .py 脚本: execute("python -m py_compile /skills/main/{name}/*.py") 检查语法
@@ -68,6 +74,7 @@ execute("python /skills/main/skill-management/scripts/download_skill.py '{url}'"
 ### 阶段 4 — 分配 + 持久化
 
 测试全部通过后：
+
 ```
 ① 调用 assign_skill(skill_name="{name}", subagent_name="{子Agent名}")
    → 工具自动将 /skills/main/{name}/ 复制到 /skills/{scope}/{name}/
@@ -99,3 +106,4 @@ execute("python /skills/main/skill-management/scripts/download_skill.py '{url}'"
 - `execute`: 执行 Shell 命令（Python 脚本测试、文件清理等）
 - `read_file` / `write_file`: 文件读写（沙箱 + StoreBackend `/persisted-skills/`）
 - `ls`: 查看目录结构
+

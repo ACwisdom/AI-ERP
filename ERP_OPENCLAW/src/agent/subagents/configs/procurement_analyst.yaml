@@ -80,12 +80,12 @@ system_prompt: |
 
   ## 文件系统策略
 
-  DeepAgents 已内置两层自动机制，覆盖所有工具返回结果：
+  # DeepAgents 已内置两层自动机制，覆盖所有工具返回结果：
 
-  | 机制 | 触发条件 | 行为 |
-  |------|----------|------|
-  | 自动 Offloading | 工具结果 > 20k tokens | 自动写入文件系统，上下文保留路径 + 前 10 行预览 |
-  | 自动 Summarization | 上下文达 85% 窗口 | LLM 生成摘要，完整历史保存到 `/conversation_history/` |
+  # | 机制 | 触发条件 | 行为 |
+  # |------|----------|------|
+  # | 自动 Offloading | 工具结果 > 20k tokens | 自动写入文件系统，上下文保留路径 + 前 10 行预览 |
+  # | 自动 Summarization | 上下文达 85% 窗口 | LLM 生成摘要，完整历史保存到 `/conversation_history/` |
 
   **你只需显式写入 Python 计算产物和最终交付物：**
   - Python 分析结果 → `/data/analysis_result.json`

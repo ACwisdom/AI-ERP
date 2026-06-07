@@ -2,9 +2,6 @@
   <aside class="sidebar">
     <!-- 侧边栏头部 -->
     <div class="sidebar-header">
-      <div class="logo">
-        <img class="logo-icon" src="https://www-static.mashibing.com/_nuxt/img/logo.69f6ec8.svg" alt="logo" />
-      </div>
       <button class="new-chat-btn" @click="$emit('new-chat')">
         <span class="icon">+</span>
         新建对话
@@ -148,28 +145,6 @@ function handleDelete(threadId) {
   padding: 20px 16px;
   border-bottom: 1px solid #f1f5f9;
   background: #fafafa;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.logo-icon {
-  height: 60px;
-  width: auto;
-}
-
-.logo-text {
-  font-size: 20px;
-  font-weight: 700;
-  background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: 0.5px;
 }
 
 .new-chat-btn {
